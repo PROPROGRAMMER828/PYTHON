@@ -1,0 +1,384 @@
+# ============================================================
+# ŚCIĄGA — FUNKCJE SPECJALNE / NIETYPOWE PYTHON OOP
+# ============================================================
+#
+# Funkcje, które różnią się od podstawowych schematów:
+# dodaj, pobierz, zmien, policz, suma, srednia, slownik, statystyki
+#
+# ============================================================
+
+
+# ============================================================
+# 1. ŚREDNIA Z DWÓCH PÓL NARAZ
+# Fragment polecenia:
+# "oblicza średnią temperaturę i wilgotność"
+# "zwraca średnią temperaturę oraz średnią wilgotność"
+# "średni dystans i średni czas"
+# ============================================================
+#
+# Użyj, gdy trzeba policzyć dwie średnie jednocześnie.
+
+
+def oblicz_srednie(self, miasto):
+    suma_temperatur = 0
+    suma_wilgotnosci = 0
+    licznik = 0
+
+    for odczyt in self.odczyty:
+        if odczyt.miasto == miasto:
+            suma_temperatur += odczyt.temperatura
+            suma_wilgotnosci += odczyt.wilgotnosc
+            licznik += 1
+
+    return suma_temperatur / licznik, suma_wilgotnosci / licznik
+
+
+# Schemat:
+
+def oblicz_srednie(self, parametr):
+    suma1 = 0
+    suma2 = 0
+    licznik = 0
+
+    for obiekt in self.lista:
+        if obiekt.pole == parametr:
+            suma1 += obiekt.pole_liczbowe_1
+            suma2 += obiekt.pole_liczbowe_2
+            licznik += 1
+
+    return suma1 / licznik, suma2 / licznik
+
+
+# ============================================================
+# 2. DODAJ, KTÓRE SAMO TWORZY OBIEKT
+# Fragment polecenia:
+# "dodaj_pomiar(id_baterii, temperatura_c)"
+# "dodaj_trening(data, typ, dystans, czas)"
+# "dodaje nowy obiekt na podstawie podanych danych"
+# ============================================================
+#
+# Użyj, gdy metoda nie dostaje gotowego obiektu, tylko dane.
+
+
+def dodaj_pomiar(self, id_baterii, temperatura_c):
+    log_id = len(self.pomiary) + 1
+
+    pomiar = BatteryLog(log_id, id_baterii, temperatura_c)
+
+    self.pomiary.append(pomiar)
+
+
+# Schemat:
+
+def dodaj_cos(self, dane1, dane2):
+    nowe_id = len(self.lista) + 1
+
+    obiekt = Klasa(nowe_id, dane1, dane2)
+
+    self.lista.append(obiekt)
+
+
+# ============================================================
+# 3. AUTOMATYCZNY STATUS W __init__
+# Fragment polecenia:
+# "status ustawiany automatycznie"
+# "jeśli temperatura > 60, status = PRZEGRZANA"
+# "status zależy od..."
+# ============================================================
+#
+# Użyj, gdy status ma powstać automatycznie w konstruktorze.
+
+
+class BatteryLog:
+    def __init__(self, log_id, id_baterii, temperatura_c):
+        self.log_id = log_id
+        self.id_baterii = id_baterii
+        self.temperatura_c = temperatura_c
+
+        if temperatura_c > 60.0:
+            self.status = "PRZEGRZANA"
+        else:
+            self.status = "OK"
+
+
+# Schemat:
+
+if wartosc > granica:
+    self.status = "STATUS_1"
+else:
+    self.status = "STATUS_2"
+
+
+# ============================================================
+# 4. ZMIANA STATUSU ZALEŻNA OD WARTOŚCI
+# Fragment polecenia:
+# "aktualizuje opóźnienie i automatycznie ustawia status"
+# "jeśli minuty > 0, ustawia status na Opóźniony"
+# "zmienia status na podstawie nowej wartości"
+# ============================================================
+#
+# Użyj, gdy metoda zmienia pole i od razu aktualizuje status.
+
+
+def aktualizuj_opoznienie(self, numer_lotu, minuty):
+    for lot in self.loty:
+        if lot.numer_lotu == numer_lotu:
+            lot.opoznienie_min = minuty
+
+            if minuty > 0:
+                lot.status = "Opóźniony"
+            else:
+                lot.status = "Planowany"
+
+
+# Schemat:
+
+def aktualizuj_cos(self, id, nowa_wartosc):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            obiekt.pole = nowa_wartosc
+
+            if nowa_wartosc > 0:
+                obiekt.status = "STATUS_1"
+            else:
+                obiekt.status = "STATUS_2"
+
+
+# ============================================================
+# 5. STATYSTYKA JAKO SUMA, A NIE LICZNIK
+# Fragment polecenia:
+# "suma dystansów dla każdego typu"
+# "łączna wartość dla każdej kategorii"
+# "suma godzin dla każdej kategorii"
+# ============================================================
+#
+# Użyj, gdy słownik ma sumować wartość, a nie liczyć sztuki.
+
+
+def pobierz_statystyki_per_aktywnosc(self):
+    slownik = {}
+
+    for trening in self.treningi:
+        if trening.typ_aktywnosci in slownik:
+            slownik[trening.typ_aktywnosci] += trening.dystans_km
+        else:
+            slownik[trening.typ_aktywnosci] = trening.dystans_km
+
+    return slownik
+
+
+# Schemat:
+
+def pobierz_statystyki_sumy(self):
+    slownik = {}
+
+    for obiekt in self.lista:
+        if obiekt.klucz in slownik:
+            slownik[obiekt.klucz] += obiekt.wartosc
+        else:
+            slownik[obiekt.klucz] = obiekt.wartosc
+
+    return slownik
+
+
+# ============================================================
+# 6. OBLICZANIE TEMPA / ILORAZU DWÓCH PÓL
+# Fragment polecenia:
+# "oblicza tempo"
+# "tempo = czas / dystans"
+# "zwraca koszt jednostkowy"
+# ============================================================
+#
+# Użyj, gdy wynik to dzielenie dwóch pól jednego obiektu.
+
+
+def oblicz_srednie_tempo(self, id_treningu):
+    for trening in self.treningi:
+        if trening.id_treningu == id_treningu:
+            return trening.czas_minuty / trening.dystans_km
+
+
+# Schemat:
+
+def oblicz_wartosc(self, id):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            return obiekt.pole1 / obiekt.pole2
+
+
+# ============================================================
+# 7. BLOKADA DUPLIKATU
+# Fragment polecenia:
+# "nie można dodać dwóch obiektów o tym samym ID"
+# "sprawdza, czy numer seryjny już istnieje"
+# "jeśli istnieje, nie dodaje ponownie"
+# ============================================================
+#
+# Użyj, gdy przed dodaniem trzeba sprawdzić unikalne pole.
+
+
+def dodaj_bron(self, nr_ser, typ):
+    for bron in self.bronie:
+        if bron.nr_ser == nr_ser:
+            print("Broń już dodana")
+            return False
+
+    nowa_bron = Bron(nr_ser, typ)
+
+    self.bronie.append(nowa_bron)
+
+    return True
+
+
+# Schemat:
+
+def dodaj_cos(self, id, dane):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            return False
+
+    nowy_obiekt = Klasa(id, dane)
+
+    self.lista.append(nowy_obiekt)
+
+    return True
+
+
+# ============================================================
+# 8. WYPOŻYCZENIE OBIEKTU
+# Fragment polecenia:
+# "wypożycz broń"
+# "jeśli nie jest jeszcze wypożyczona"
+# "ustawia wypozyczona na True"
+# ============================================================
+#
+# Użyj, gdy obiekt można wypożyczyć tylko raz.
+
+
+def wypozycz_bron(self, nr_ser, nazwisko):
+    for bron in self.bronie:
+        if bron.nr_ser == nr_ser:
+
+            if bron.wypozyczona:
+                return False
+
+            bron.wypozyczona = True
+            bron.wypozyczyl = nazwisko
+
+            return True
+
+    return False
+
+
+# Schemat:
+
+def wypozycz_cos(self, id, osoba):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+
+            if obiekt.wypozyczony:
+                return False
+
+            obiekt.wypozyczony = True
+            obiekt.wypozyczyl = osoba
+
+            return True
+
+    return False
+
+
+# ============================================================
+# 9. ZWROT OBIEKTU
+# Fragment polecenia:
+# "zwróć broń"
+# "jeśli nie jest wypożyczona, zwraca False"
+# "ustawia wypozyczona na False"
+# ============================================================
+#
+# Użyj, gdy trzeba zwrócić wcześniej wypożyczony obiekt.
+
+
+def zwroc_bron(self, nr_ser):
+    for bron in self.bronie:
+        if bron.nr_ser == nr_ser:
+
+            if not bron.wypozyczona:
+                return False
+
+            bron.wypozyczona = False
+            bron.wypozyczyl = None
+
+            return True
+
+    return False
+
+
+# Schemat:
+
+def zwroc_cos(self, id):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+
+            if not obiekt.wypozyczony:
+                return False
+
+            obiekt.wypozyczony = False
+            obiekt.wypozyczyl = None
+
+            return True
+
+    return False
+
+
+# ============================================================
+# 10. USUWANIE JEDNEGO OBIEKTU
+# Fragment polecenia:
+# "usuń obiekt o podanym ID"
+# "usuń zgłoszenie"
+# "usuń rezerwację"
+# ============================================================
+#
+# Użyj, gdy trzeba usunąć jeden obiekt z listy.
+
+
+def usun_kurs(self, kurs_id):
+    for kurs in self.kursy:
+        if kurs.kurs_id == kurs_id:
+            self.kursy.remove(kurs)
+            return True
+
+    return False
+
+
+# Schemat:
+
+def usun_cos(self, id):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            self.lista.remove(obiekt)
+            return True
+
+    return False
+
+
+# ============================================================
+# 11. CZYSZCZENIE CAŁEJ LISTY
+# Fragment polecenia:
+# "wyczyść dane"
+# "usuń wszystkie rekordy"
+# "wyczyść historię"
+# ============================================================
+#
+# Użyj, gdy trzeba usunąć wszystkie elementy listy.
+
+
+def wyczysc_dane(self):
+    self.odczyty.clear()
+
+
+# Alternatywa:
+
+def wyczysc_dane(self):
+    self.odczyty = []
+
+
