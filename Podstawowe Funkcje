@@ -1,0 +1,401 @@
+```python
+
+#
+# Ta sekcja zawiera podstawowe schematy funkcji z managerów:
+#
+# __init__ klasy danych
+# __init__ managera
+# dodaj
+# pobierz_wszystkie
+# pobierz po filtrze
+# zmien / aktualizuj
+# policz
+# suma
+# srednia
+# slownik
+# statystyki
+# usun
+# wyczysc
+#
+# ============================================================
+
+
+# ============================================================
+# 1. KLASA DANYCH — __init__
+# Fragment polecenia:
+# "Klasa Film powinna zawierać pola..."
+# "Klasa Rezerwacja przechowuje..."
+# "Pola: id, nazwa, typ, cena"
+# ============================================================
+#
+# Użyj, gdy tworzysz pojedynczy obiekt danych.
+
+
+class Film:
+    def __init__(self, film_id, tytul, gatunek, ocena):
+        self.film_id = film_id
+        self.tytul = tytul
+        self.gatunek = gatunek
+        self.ocena = ocena
+
+
+# Schemat:
+
+class Klasa:
+    def __init__(self, pole1, pole2, pole3):
+        self.pole1 = pole1
+        self.pole2 = pole2
+        self.pole3 = pole3
+
+
+# ============================================================
+# 2. MANAGER — __init__
+# Fragment polecenia:
+# "Klasa Manager zarządza listą..."
+# "W konstruktorze utwórz listę..."
+# "self.filmy = []"
+# ============================================================
+#
+# Użyj, gdy tworzysz klasę zarządzającą kolekcją obiektów.
+
+
+class FilmManager:
+    def __init__(self):
+        self.filmy = []
+
+
+# Schemat:
+
+class Manager:
+    def __init__(self):
+        self.lista = []
+
+
+# ============================================================
+# 3. DODAJ OBIEKT DO LISTY
+# Fragment polecenia:
+# "dodaj_film(film)"
+# "dodaje obiekt do listy"
+# "rejestruje nowy obiekt"
+# ============================================================
+#
+# Użyj, gdy metoda dostaje gotowy obiekt i ma go dodać do listy.
+
+
+def dodaj_film(self, film):
+    self.filmy.append(film)
+
+
+# Schemat:
+
+def dodaj_cos(self, obiekt):
+    self.lista.append(obiekt)
+
+
+# ============================================================
+# 4. POBIERZ WSZYSTKIE
+# Fragment polecenia:
+# "pobierz_wszystkie()"
+# "zwraca listę wszystkich obiektów"
+# "wyświetla wszystkie dane"
+# ============================================================
+#
+# Użyj, gdy funkcja ma zwrócić całą listę.
+
+
+def pobierz_wszystkie(self):
+    return self.filmy
+
+
+# Schemat:
+
+def pobierz_wszystkie(self):
+    return self.lista
+
+
+# ============================================================
+# 5. POBIERZ PO FILTRZE
+# Fragment polecenia:
+# "pobierz_filmy_gatunku(gatunek)"
+# "zwraca obiekty z podanej kategorii"
+# "pobiera obiekty według typu / statusu / miasta"
+# ============================================================
+#
+# Użyj, gdy trzeba zwrócić listę obiektów spełniających warunek.
+
+
+def pobierz_filmy_gatunku(self, gatunek):
+    lista = []
+
+    for film in self.filmy:
+        if film.gatunek == gatunek:
+            lista.append(film)
+
+    return lista
+
+
+# Schemat:
+
+def pobierz_po_filtrze(self, parametr):
+    lista = []
+
+    for obiekt in self.lista:
+        if obiekt.pole == parametr:
+            lista.append(obiekt)
+
+    return lista
+
+
+# ============================================================
+# 6. ZMIEŃ / AKTUALIZUJ PO ID
+# Fragment polecenia:
+# "zmien_ocene(film_id, nowa_ocena)"
+# "zmienia status obiektu"
+# "aktualizuje cenę / lokalizację / ocenę"
+# ============================================================
+#
+# Użyj, gdy trzeba znaleźć obiekt po ID i zmienić jedno jego pole.
+
+
+def zmien_ocene(self, film_id, nowa_ocena):
+    for film in self.filmy:
+        if film.film_id == film_id:
+            film.ocena = nowa_ocena
+
+
+# Schemat:
+
+def zmien_cos(self, id, nowa_wartosc):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            obiekt.pole = nowa_wartosc
+
+
+# ============================================================
+# 7. POLICZ OBIEKTY
+# Fragment polecenia:
+# "policz_filmy_gatunku(gatunek)"
+# "zwraca liczbę obiektów danego typu"
+# "ile jest obiektów o danym statusie"
+# ============================================================
+#
+# Użyj, gdy trzeba zwrócić liczbę pasujących obiektów.
+
+
+def policz_filmy_gatunku(self, gatunek):
+    licznik = 0
+
+    for film in self.filmy:
+        if film.gatunek == gatunek:
+            licznik += 1
+
+    return licznik
+
+
+# Schemat:
+
+def policz_cos(self, parametr):
+    licznik = 0
+
+    for obiekt in self.lista:
+        if obiekt.pole == parametr:
+            licznik += 1
+
+    return licznik
+
+
+# ============================================================
+# 8. OBLICZ SUMĘ
+# Fragment polecenia:
+# "oblicz_laczna_wartosc(typ)"
+# "zwraca sumę wartości"
+# "oblicza łączną liczbę godzin"
+# ============================================================
+#
+# Użyj, gdy trzeba zsumować jedno pole liczbowe dla pasujących obiektów.
+
+
+def oblicz_sume_ocen_gatunku(self, gatunek):
+    suma = 0
+
+    for film in self.filmy:
+        if film.gatunek == gatunek:
+            suma += film.ocena
+
+    return suma
+
+
+# Schemat:
+
+def oblicz_sume(self, parametr):
+    suma = 0
+
+    for obiekt in self.lista:
+        if obiekt.pole == parametr:
+            suma += obiekt.pole_liczbowe
+
+    return suma
+
+
+# ============================================================
+# 9. OBLICZ ŚREDNIĄ
+# Fragment polecenia:
+# "oblicz_srednia_ocene(kategoria)"
+# "zwraca średnią wartość"
+# "oblicza średnią cenę / ocenę / temperaturę"
+# ============================================================
+#
+# Użyj, gdy trzeba policzyć średnią jednego pola liczbowego.
+
+
+def oblicz_srednia_ocene(self, gatunek):
+    suma = 0
+    licznik = 0
+
+    for film in self.filmy:
+        if film.gatunek == gatunek:
+            suma += film.ocena
+            licznik += 1
+
+    return suma / licznik
+
+
+# Schemat:
+
+def oblicz_srednia(self, parametr):
+    suma = 0
+    licznik = 0
+
+    for obiekt in self.lista:
+        if obiekt.pole == parametr:
+            suma += obiekt.pole_liczbowe
+            licznik += 1
+
+    return suma / licznik
+
+
+# ============================================================
+# 10. SŁOWNIK: ID -> WARTOŚĆ
+# Fragment polecenia:
+# "pobierz_oceny_filmow()"
+# "zwraca słownik, w którym kluczem jest ID"
+# "klucz: id, wartość: cena / ocena / status"
+# ============================================================
+#
+# Użyj, gdy trzeba zwrócić słownik z jedną wartością dla każdego obiektu.
+
+
+def pobierz_oceny_filmow(self):
+    slownik = {}
+
+    for film in self.filmy:
+        slownik[film.film_id] = film.ocena
+
+    return slownik
+
+
+# Schemat:
+
+def pobierz_slownik(self):
+    slownik = {}
+
+    for obiekt in self.lista:
+        slownik[obiekt.id] = obiekt.wartosc
+
+    return slownik
+
+
+# ============================================================
+# 11. STATYSTYKI — LICZENIE WYSTĄPIEŃ
+# Fragment polecenia:
+# "pobierz_statystyki_gatunkow()"
+# "zwraca słownik z liczbą obiektów każdego typu"
+# "liczba zgłoszeń według statusu"
+# ============================================================
+#
+# Użyj, gdy trzeba policzyć, ile razy występuje dana kategoria.
+
+
+def pobierz_statystyki_gatunkow(self):
+    slownik = {}
+
+    for film in self.filmy:
+        if film.gatunek in slownik:
+            slownik[film.gatunek] += 1
+        else:
+            slownik[film.gatunek] = 1
+
+    return slownik
+
+
+# Schemat:
+
+def pobierz_statystyki(self):
+    slownik = {}
+
+    for obiekt in self.lista:
+        if obiekt.pole in slownik:
+            slownik[obiekt.pole] += 1
+        else:
+            slownik[obiekt.pole] = 1
+
+    return slownik
+
+
+# ============================================================
+# 12. USUŃ JEDEN OBIEKT
+# Fragment polecenia:
+# "usun_film(film_id)"
+# "usuń obiekt o podanym ID"
+# "usuwa wybrany rekord"
+# ============================================================
+#
+# Użyj, gdy trzeba znaleźć obiekt po ID i usunąć go z listy.
+
+
+def usun_film(self, film_id):
+    for film in self.filmy:
+        if film.film_id == film_id:
+            self.filmy.remove(film)
+            return True
+
+    return False
+
+
+# Schemat:
+
+def usun_cos(self, id):
+    for obiekt in self.lista:
+        if obiekt.id == id:
+            self.lista.remove(obiekt)
+            return True
+
+    return False
+
+
+# ============================================================
+# 13. WYCZYŚĆ CAŁĄ LISTĘ
+# Fragment polecenia:
+# "wyczysc_dane()"
+# "usuń wszystkie rekordy"
+# "czyści historię / listę danych"
+# ============================================================
+#
+# Użyj, gdy trzeba usunąć wszystkie elementy z listy.
+
+
+def wyczysc_dane(self):
+    self.filmy.clear()
+
+
+# Alternatywa:
+
+def wyczysc_dane(self):
+    self.filmy = []
+
+
+# Schemat:
+
+def wyczysc_dane(self):
+    self.lista.clear()
+```
