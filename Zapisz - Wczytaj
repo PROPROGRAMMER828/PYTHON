@@ -1,0 +1,16 @@
+ def zapisz_w_json(self):
+        dane = []
+        for sprzet in self.sprzety:
+            dane.append(sprzet.__dict__)
+        plik = open("C:/Users/arkad/Desktop/JSON/sprzety.json","w")
+        json.dump(dane,plik)
+        plik.close()
+    def wczytaj_z_json(self):
+        if not os.path.exists("C:/Users/arkad/Desktop/JSON/sprzety.json"):
+            return
+        plik = open("C:/Users/arkad/Desktop/JSON/sprzety.json","r")
+        dane = json.load(plik)
+        self.sprzety = []
+        for rekord in dane:
+            obiekt = Sprzet(rekord["sprzet_id"],rekord["nazwa"],rekord["typ"],rekord["lokalizacja"],rekord["wartosc"])
+            self.sprzety.append(obiekt)
