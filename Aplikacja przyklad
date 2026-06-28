@@ -1,0 +1,92 @@
+import json
+import os
+
+class Sprzet:
+    def __init__(self,sprzet_id,nazwa,typ,lokalizacja,wartosc):
+        self.sprzet_id = sprzet_id
+        self.nazwa = nazwa
+        self.typ = typ
+        self.lokalizacja = lokalizacja
+        self.wartosc = wartosc
+class SprzetManager:
+    def __init__(self):
+        self.sprzety = []
+    def dodaj_sprzet(self,sprzet):
+        self.sprzety.append(sprzet)
+        self.zapisz_w_json()
+    def pobierz_wszystkie(self):
+        return self.sprzety
+    def pobierz_sprzet_typu(self,typ):
+        lista = []
+        for sprzet in self.sprzety:
+            if sprzet.typ == typ:
+                lista.append(typ)
+        return lista
+    def oblicz_laczna_wartosc(self,typ):
+        suma = 0
+        for sprzet in self.sprzety:
+            if sprzet.typ == typ:
+                suma += sprzet.wartosc
+        return suma
+    def oblicz_srednia_wartosc(self,typ):
+        suma = 0
+        licznik = 0
+        for sprzet in self.sprzety:
+            if sprzet.typ == typ:
+                suma += sprzet.wartosc
+                licznik += 1
+        return suma/licznik
+    def policz_sprzet_typu(self,typ):
+        licznik = 0
+        for sprzet in self.sprzety:
+            if sprzet.typ == typ:
+                licznik += 1
+        return licznik
+    def zmien_lokalizacje(self,sprzet_id,nowa_lokalizacja):
+        for sprzet in self.sprzety:
+            if sprzet.sprzet_id == sprzet_id:
+                sprzet.lokalizacja = nowa_lokalizacja
+        self.zapisz_w_json()
+    def pobierz_wartosci_sprzetow(self):
+        slownik = {}
+        for sprzet in self.sprzety:
+            slownik[sprzet.sprzet_id] = sprzet.wartosc
+        return slownik
+    def pobierz_statystyki_typow(self):
+        slownik = {}
+        for sprzet in self.sprzety:
+            if sprzet.typ in slownik:
+                slownik[sprzet.typ] += 1
+            else:
+                slownik[sprzet.typ] = 1
+        return slownik
+    def zapisz_w_json(self):
+        dane = []
+        for sprzet in self.sprzety:
+            dane.append(sprzet.__dict__)
+        plik = open("C:/Users/arkad/Desktop/JSON/sprzety.json","w")
+        json.dump(dane,plik)
+        plik.close()
+    def wczytaj_z_json(self):
+        if not os.path.exists("C:/Users/arkad/Desktop/JSON/sprzety.json"):
+            return
+        plik = open("C:/Users/arkad/Desktop/JSON/sprzety.json","r")
+        dane = json.load(plik)
+        self.sprzety = []
+        for rekord in dane:
+            obiekt = Sprzet(rekord["sprzet_id"],rekord["nazwa"],rekord["typ"],rekord["lokalizacja"],rekord["wartosc"])
+            self.sprzety.append(obiekt)
+
+if __name__ == "__main__":
+    manager = SprzetManager()
+    manager.wczytaj_z_json()
+    sprzet1 = Sprzet(1,"Lodowka","Kuchenne","Kuchnia",1000)
+    sprzet2 = Sprzet(2,"Pralka","Lazienkowe","Lazienka",2000)
+    sprzet3 = Sprzet(3,"Piec","Grzewne","Kotlownia",5000)
+    manager.dodaj_sprzet(sprzet1)
+    manager.dodaj_sprzet(sprzet2)
+    manager.dodaj_sprzet(sprzet3)
+    manager.zmien_lokalizacje(1,"Sala 204")
+    print(manager.pobierz_wszystkie())
+    print(manager.pobierz_sprzet_typu("Laptop"))
+    print(manager.pobierz_statystyki_typow())
