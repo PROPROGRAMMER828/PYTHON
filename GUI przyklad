@@ -1,0 +1,272 @@
+# ============================================================
+# GUI — APLIKACJA O FILMACH
+# QComboBox + QSpinBox + QTableWidget + wykres słupkowy
+# ============================================================
+
+import sys
+
+from PyQt5.QtWidgets import (
+    QApplication,
+    QWidget,
+    QVBoxLayout,
+    QTableWidget,
+    QTableWidgetItem,
+    QComboBox,
+    QSpinBox,
+    QPushButton,
+    QLabel,
+    QLineEdit
+)
+
+import matplotlib.pyplot as plt
+
+
+# ============================================================
+# GUI
+# ============================================================
+
+class FilmApp(QWidget):  # <<< ZMIENIASZ nazwę okna, jeśli masz inną aplikację
+
+    def __init__(self, manager):
+        super().__init__()
+
+        self.manager = manager
+
+        self.setWindowTitle("Aplikacja filmowa")  # <<< ZMIENIASZ tytuł okna
+        self.setGeometry(100, 100, 700, 500)
+
+        # ====================================================
+        # TABELA — QTableWidget
+        # ====================================================
+
+        self.tabela = QTableWidget()
+
+        # Liczba kolumn w tabeli.
+        # Tutaj: ID, Tytuł, Gatunek, Ocena = 4 kolumny.
+        self.tabela.setColumnCount(4)
+
+        # Nazwy kolumn.
+        # Zmieniasz je pod pola swojej klasy.
+        self.tabela.setHorizontalHeaderLabels([
+            "ID",
+            "Tytuł",
+            "Gatunek",
+            "Ocena"
+        ])
+
+        # ====================================================
+        # QLINEEDIT — wpisywanie tytułu filmu
+        # ====================================================
+
+        self.tytul_input = QLineEdit()
+        self.tytul_input.setPlaceholderText("Tytuł filmu")
+
+        # ====================================================
+        # QCOMBOBOX — wybór gatunku filmu
+        # ====================================================
+
+        self.gatunek_combo = QComboBox()
+
+        # Opcje z listy rozwijanej.
+        # Zmieniasz je na opcje z polecenia.
+        self.gatunek_combo.addItem("Dramat")
+        self.gatunek_combo.addItem("Komedia")
+        self.gatunek_combo.addItem("Horror")
+        self.gatunek_combo.addItem("Akcja")
+        self.gatunek_combo.addItem("Sci-Fi")
+
+        # ====================================================
+        # QSPINBOX — ocena filmu
+        # ====================================================
+
+        self.ocena_spin = QSpinBox()
+
+        # Zakres oceny.
+        # Tutaj użytkownik może wybrać od 1 do 10.
+        self.ocena_spin.setRange(1, 10)
+
+        # ====================================================
+        # BUTTONY
+        # ====================================================
+
+        self.dodaj_button = QPushButton("Dodaj film")
+
+        # Po kliknięciu odpala się funkcja dodaj_film().
+        self.dodaj_button.clicked.connect(self.dodaj_film)
+
+        self.wykres_button = QPushButton("Pokaż wykres gatunków")
+
+        # Po kliknięciu odpala się funkcja pokaz_wykres().
+        self.wykres_button.clicked.connect(self.pokaz_wykres)
+
+        # ====================================================
+        # LAYOUT — KOLEJNOŚĆ ELEMENTÓW W OKNIE
+        # ====================================================
+        #
+        # Kolejność addWidget ma znaczenie.
+        # Elementy pokazują się od góry do dołu.
+        #
+        # Tutaj kolejność w oknie będzie:
+        # 1. tabela
+        # 2. napis "Tytuł filmu"
+        # 3. pole do wpisania tytułu
+        # 4. napis "Gatunek"
+        # 5. combobox z gatunkiem
+        # 6. napis "Ocena"
+        # 7. spinbox z oceną
+        # 8. przycisk dodawania
+        # 9. przycisk wykresu
+
+        layout = QVBoxLayout()
+
+        layout.addWidget(self.tabela)
+
+        layout.addWidget(QLabel("Tytuł filmu"))
+        layout.addWidget(self.tytul_input)
+
+        layout.addWidget(QLabel("Gatunek"))
+        layout.addWidget(self.gatunek_combo)
+
+        layout.addWidget(QLabel("Ocena"))
+        layout.addWidget(self.ocena_spin)
+
+        layout.addWidget(self.dodaj_button)
+        layout.addWidget(self.wykres_button)
+
+        self.setLayout(layout)
+
+        # Na starcie pokazujemy dane w tabeli.
+        self.odswiez_tabele()
+
+    # ========================================================
+    # ODŚWIEŻANIE TABELI
+    # ========================================================
+    #
+    # Ta funkcja bierze filmy z managera i wpisuje je do tabeli.
+    #
+    # Używasz jej:
+    # - po uruchomieniu okna,
+    # - po dodaniu filmu,
+    # - po zmianie danych,
+    # - po usunięciu danych.
+
+    def odswiez_tabele(self):
+        filmy = self.manager.pobierz_wszystkie()
+        # <<< ZMIENIASZ, jeśli Twoja metoda nazywa się inaczej.
+
+        # Tabela ma mieć tyle wierszy, ile jest filmów.
+        self.tabela.setRowCount(len(filmy))
+
+        # row = numer wiersza w tabeli
+        # film = aktualny obiekt z listy filmów
+        for row, film in enumerate(filmy):
+
+            # setItem(wiersz, kolumna, tekst)
+            #
+            # Kolumny liczą się od 0:
+            # 0 = ID
+            # 1 = Tytuł
+            # 2 = Gatunek
+            # 3 = Ocena
+
+            self.tabela.setItem(
+                row,
+                0,
+                QTableWidgetItem(str(film.film_id))
+            )
+
+            self.tabela.setItem(
+                row,
+                1,
+                QTableWidgetItem(film.tytul)
+            )
+
+            self.tabela.setItem(
+                row,
+                2,
+                QTableWidgetItem(film.gatunek)
+            )
+
+            self.tabela.setItem(
+                row,
+                3,
+                QTableWidgetItem(str(film.ocena))
+            )
+
+    # ========================================================
+    # DODAWANIE FILMU Z GUI
+    # ========================================================
+    #
+    # Ta funkcja odpala się po kliknięciu "Dodaj film".
+    #
+    # Kolejność:
+    # 1. pobierz tytuł z QLineEdit
+    # 2. pobierz gatunek z QComboBox
+    # 3. pobierz ocenę z QSpinBox
+    # 4. utwórz obiekt Film
+    # 5. dodaj film przez managera
+    # 6. odśwież tabelę
+
+    def dodaj_film(self):
+        tytul = self.tytul_input.text()
+        gatunek = self.gatunek_combo.currentText()
+        ocena = self.ocena_spin.value()
+
+        # ID robimy na podstawie długości listy filmów.
+        # Zmieniasz self.manager.filmy, jeśli Twoja lista nazywa się inaczej.
+        film_id = len(self.manager.filmy) + 1
+
+        film = Film(
+            film_id,
+            tytul,
+            gatunek,
+            ocena
+        )
+
+        self.manager.dodaj_film(film)
+
+        self.tytul_input.clear()
+
+        self.odswiez_tabele()
+
+    # ========================================================
+    # WYKRES SŁUPKOWY MATPLOTLIB
+    # ========================================================
+    #
+    # Ta funkcja odpala się po kliknięciu "Pokaż wykres gatunków".
+    #
+    # Manager powinien zwracać słownik, np.:
+    #
+    # {
+    #     "Dramat": 3,
+    #     "Komedia": 2,
+    #     "Horror": 1
+    # }
+
+    def pokaz_wykres(self):
+        statystyki = self.manager.pobierz_statystyki_gatunkow()
+        # <<< ZMIENIASZ, jeśli Twoja metoda od statystyk nazywa się inaczej.
+
+        etykiety = list(statystyki.keys())
+        wartosci = list(statystyki.values())
+
+        plt.bar(etykiety, wartosci)
+        plt.title("Liczba filmów według gatunku")
+        plt.xlabel("Gatunek")
+        plt.ylabel("Liczba filmów")
+        plt.show()
+
+
+# ============================================================
+# URUCHOMIENIE PROGRAMU
+# ============================================================
+
+if __name__ == "__main__":
+    manager = FilmManager()
+
+    app = QApplication(sys.argv)
+
+    okno = FilmApp(manager)
+    okno.show()
+
+    app.exec()
