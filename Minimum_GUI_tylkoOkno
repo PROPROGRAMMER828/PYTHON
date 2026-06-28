@@ -1,0 +1,23 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+
+class MainWindow(QMainWindow):
+    def __init__(self, manager):
+        super().__init__()
+
+        self.GraManager = manager
+
+        self.setWindowTitle("Moja aplikacja")
+        self.setGeometry(100, 100, 600, 400)
+
+
+if __name__ == "__main__":
+    manager = GraManager()
+
+    app = QApplication(sys.argv)
+
+    okno = MainWindow(manager)
+    okno.show()
+
+    app.exec()
